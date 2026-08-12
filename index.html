@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AI School Learning Helper</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+  <h1>🤖 AI School Learning Helper</h1>
+  <p>Faiyaz School and College Rangpur</p>
+</header>
+
+
+<main class="container">
+
+  <!-- ROBOT TEACHER -->
+
+  <section class="teacher-card">
+
+    <h2>🤖 Robot Teacher</h2>
+
+    <p>
+      যেকোনো সাধারণ প্রশ্ন লিখে Robot Teacher-কে জিজ্ঞেস করো।
+    </p>
+
+    <textarea
+      id="studentQuestion"
+      placeholder="তোমার প্রশ্ন এখানে লিখো..."
+    ></textarea>
+
+    <button class="main-btn" onclick="askTeacher()">
+      🤖 উত্তর দেখাও
+    </button>
+
+    <button class="voice-btn" onclick="speakTeacherAnswer()">
+      🔊 উত্তর শুনুন
+    </button>
+
+    <div id="teacherAnswer" class="answer-box">
+      এখানে Robot Teacher-এর উত্তর দেখা যাবে।
+    </div>
+
+  </section>
+
+
+  <!-- QUIZ -->
+
+  <section class="quiz-card">
+
+    <h2>📝 Subject Quiz</h2>
+
+    <label>বিষয় নির্বাচন করো:</label>
+
+    <select id="subjectSelect">
+
+      <option value="bangla">বাংলা</option>
+      <option value="english">English</option>
+      <option value="math">গণিত</option>
+      <option value="science">বিজ্ঞান</option>
+      <option value="ict">ICT</option>
+      <option value="bgs">বাংলাদেশ ও বিশ্বপরিচয়</option>
+
+    </select>
+
+
+    <h3>কতটি প্রশ্ন?</h3>
+
+    <div class="quiz-buttons">
+
+      <button onclick="startQuiz(10)">১০</button>
+
+      <button onclick="startQuiz(20)">২০</button>
+
+      <button onclick="startQuiz(30)">৩০</button>
+
+      <button onclick="startQuiz(40)">৪০</button>
+
+      <button onclick="startQuiz(50)">৫০</button>
+
+      <button onclick="startQuiz(60)">৬০</button>
+
+    </div>
+
+
+    <div id="quizArea" style="display:none;">
+
+      <div class="progress-container">
+        <div id="progressBar"></div>
+      </div>
+
+      <h3 id="questionNumber">
+        প্রশ্ন ১
+      </h3>
+
+      <div id="question" class="question-box"></div>
+
+      <div id="options"></div>
+
+      <div id="explanation" class="explanation">
+        <b>সঠিক উত্তর:</b>
+        <span id="explanationText"></span>
+      </div>
+
+      <button
+        id="speakQuestionButton"
+        class="voice-btn"
+        onclick="speakQuestion()">
+        🔊 প্রশ্ন শুনুন
+      </button>
+
+      <button
+        id="nextButton"
+        class="main-btn"
+        onclick="nextQuestion()"
+        style="display:none;">
+        ➡️ পরের প্রশ্ন
+      </button>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div id="resultArea" class="result-box" style="display:none;">
+
+      <h2>🎉 Quiz শেষ!</h2>
+
+      <p id="resultText"></p>
+
+      <p>
+        ✅ সঠিক:
+        <b id="correctCount">0</b>
+      </p>
+
+      <p>
+        ❌ ভুল:
+        <b id="wrongCount">0</b>
+      </p>
+
+      <button class="main-btn" onclick="restartQuiz()">
+        🔄 আবার শুরু করুন
+      </button>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer>
+  <p>© AI Horizon | AI School Learning Helper</p>
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+  </html>
