@@ -3,163 +3,731 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>AI School Learning Helper</title>
-
+  <meta name="theme-color" content="#5146e5">
+  <title>AI Quiz Teacher</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header class="header">
-  <h1>🤖 AI School Learning Helper</h1>
-  <p>Faiyaz School and College Rangpur</p>
+<header class="hero">
+  <div class="robot">🤖</div>
+  <h1>AI Quiz Teacher</h1>
+  <p>শিখুন • অনুশীলন করুন • Quiz দিন • নিজের স্কোর দেখুন</p>
 </header>
-
 
 <main class="container">
 
-  <!-- ROBOT TEACHER -->
+  <!-- Robo Teacher -->
+  <section class="card">
+    <h2>👨‍🏫 Robo Teacher-কে প্রশ্ন করো</h2>
 
-  <section class="teacher-card">
+    <textarea id="studentQuestion"
+      placeholder="যেমন: HTML কী?"></textarea>
 
-    <h2>🤖 Robot Teacher</h2>
-
-    <p>
-      যেকোনো সাধারণ প্রশ্ন লিখে Robot Teacher-কে জিজ্ঞেস করো।
-    </p>
-
-    <textarea
-      id="studentQuestion"
-      placeholder="তোমার প্রশ্ন এখানে লিখো..."
-    ></textarea>
-
-    <button class="main-btn" onclick="askTeacher()">
-      🤖 উত্তর দেখাও
+    <button class="primary-btn" onclick="askTeacher()">
+      ✨ Explanation দাও
     </button>
 
-    <button class="voice-btn" onclick="speakTeacherAnswer()">
-      🔊 উত্তর শুনুন
-    </button>
+    <div id="teacherAnswer" class="answer-box hidden">
+      <h3>🤖 Robo Teacher বলছে:</h3>
+      <p id="teacherAnswerText"></p>
 
-    <div id="teacherAnswer" class="answer-box">
-      এখানে Robot Teacher-এর উত্তর দেখা যাবে।
+      <button class="voice-btn" onclick="speakAnswer()">
+        🔊 শুনুন
+      </button>
     </div>
-
   </section>
 
-
-  <!-- QUIZ -->
-
-  <section class="quiz-card">
-
-    <h2>📝 Subject Quiz</h2>
-
-    <label>বিষয় নির্বাচন করো:</label>
+  <!-- Quiz -->
+  <section class="card">
+    <h2>🎯 Smart Quiz</h2>
 
     <select id="subjectSelect">
-
       <option value="bangla">বাংলা</option>
       <option value="english">English</option>
       <option value="math">গণিত</option>
       <option value="science">বিজ্ঞান</option>
       <option value="ict">ICT</option>
       <option value="bgs">বাংলাদেশ ও বিশ্বপরিচয়</option>
-
     </select>
 
-
-    <h3>কতটি প্রশ্ন?</h3>
-
     <div class="quiz-buttons">
+      <button onclick="startQuiz(10)">১০ প্রশ্ন</button>
+      <button onclick="startQuiz(20)">২০ প্রশ্ন</button>
+      <button onclick="startQuiz(30)">৩০ প্রশ্ন</button>
+      <button onclick="startQuiz(40)">৪০ প্রশ্ন</button>
+      <button onclick="startQuiz(50)">৫০ প্রশ্ন</button>
+      <button class="big-btn" onclick="startQuiz(60)">🏆 ৬০ প্রশ্ন</button>
+    </div>
+  </section>
 
-      <button onclick="startQuiz(10)">১০</button>
+  <!-- Quiz Area -->
+  <section id="quizArea" class="card hidden">
 
-      <button onclick="startQuiz(20)">২০</button>
-
-      <button onclick="startQuiz(30)">৩০</button>
-
-      <button onclick="startQuiz(40)">৪০</button>
-
-      <button onclick="startQuiz(50)">৫০</button>
-
-      <button onclick="startQuiz(60)">৬০</button>
-
+    <div class="quiz-top">
+      <span id="questionNumber">প্রশ্ন ১/৬০</span>
+      <span id="scoreDisplay">স্কোর: ০</span>
     </div>
 
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
 
-    <div id="quizArea" style="display:none;">
+    <h2 id="question"></h2>
 
-      <div class="progress-container">
-        <div id="progressBar"></div>
+    <div id="options"></div>
+
+    <div id="explanation" class="explanation hidden">
+      <h3>💡 ব্যাখ্যা</h3>
+      <p id="explanationText"></p>
+    </div>
+
+    <button id="nextButton"
+      class="primary-btn hidden"
+      onclick="nextQuestion()">
+      ➡️ পরের প্রশ্ন
+    </button>
+
+  </section>
+
+  <!-- Result -->
+  <section id="resultArea" class="card result-card hidden">
+
+    <div class="trophy">🏆</div>
+
+    <h2>Quiz শেষ!</h2>
+
+    <h3 id="resultText"></h3>
+
+    <div class="result-grid">
+
+      <div>
+        <strong id="correctCount">০</strong>
+        <span>সঠিক</span>
       </div>
 
-      <h3 id="questionNumber">
-        প্রশ্ন ১
-      </h3>
-
-      <div id="question" class="question-box"></div>
-
-      <div id="options"></div>
-
-      <div id="explanation" class="explanation">
-        <b>সঠিক উত্তর:</b>
-        <span id="explanationText"></span>
+      <div>
+        <strong id="wrongCount">০</strong>
+        <span>ভুল</span>
       </div>
 
-      <button
-        id="speakQuestionButton"
-        class="voice-btn"
-        onclick="speakQuestion()">
-        🔊 প্রশ্ন শুনুন
-      </button>
-
-      <button
-        id="nextButton"
-        class="main-btn"
-        onclick="nextQuestion()"
-        style="display:none;">
-        ➡️ পরের প্রশ্ন
-      </button>
+      <div>
+        <strong id="percentage">০%</strong>
+        <span>Result</span>
+      </div>
 
     </div>
 
-
-    <!-- RESULT -->
-
-    <div id="resultArea" class="result-box" style="display:none;">
-
-      <h2>🎉 Quiz শেষ!</h2>
-
-      <p id="resultText"></p>
-
-      <p>
-        ✅ সঠিক:
-        <b id="correctCount">0</b>
-      </p>
-
-      <p>
-        ❌ ভুল:
-        <b id="wrongCount">0</b>
-      </p>
-
-      <button class="main-btn" onclick="restartQuiz()">
-        🔄 আবার শুরু করুন
-      </button>
-
-    </div>
+    <button class="primary-btn" onclick="restartQuiz()">
+      🔄 আবার Quiz দাও
+    </button>
 
   </section>
 
 </main>
 
-
 <footer>
-  <p>© AI Horizon | AI School Learning Helper</p>
+  🤖 AI Quiz Teacher<br>
+  Made for Smart Learning
 </footer>
 
 
-<script src="script.js"></script>
+<script>
+
+/* =====================================================
+   QUESTION GENERATORS
+   ৬টি বিষয়ে ৬০টি করে = মোট ৩৬০টি প্রশ্ন
+===================================================== */
+
+function makeQuestions() {
+
+  /* ---------- বাংলা ---------- */
+
+  const banglaBase = [
+    ["বাংলা ভাষার স্বরবর্ণ কয়টি?", ["৯টি","১১টি","১৩টি","১৫টি"], 1],
+    ["‘সুখ’-এর বিপরীত শব্দ কী?", ["আনন্দ","দুঃখ","শান্তি","হাসি"], 1],
+    ["‘আলো’-এর বিপরীত শব্দ কী?", ["রোদ","অন্ধকার","আগুন","সূর্য"], 1],
+    ["‘জল’-এর সমার্থক শব্দ কোনটি?", ["আগুন","পানি","বায়ু","মাটি"], 1],
+    ["‘সূর্য’-এর সমার্থক কোনটি?", ["রবি","শশী","ধরা","নিশা"], 0],
+    ["‘চাঁদ’-এর সমার্থক কোনটি?", ["রবি","শশী","অনল","পবন"], 1],
+    ["‘বায়ু’-এর সমার্থক কোনটি?", ["পবন","অনল","জল","ধরা"], 0],
+    ["‘আগুন’-এর সমার্থক কোনটি?", ["অনল","পবন","শশী","বারি"], 0],
+    ["‘আমি’ কোন পদ?", ["বিশেষ্য","সর্বনাম","বিশেষণ","ক্রিয়া"], 1],
+    ["‘সুন্দর ফুল’—এখানে বিশেষণ কোনটি?", ["ফুল","সুন্দর","এখানে","কোনোটিই নয়"], 1],
+    ["‘রহিম স্কুলে যায়’—ক্রিয়া কোনটি?", ["রহিম","স্কুলে","যায়","স্কুল"], 2],
+    ["‘ঢাকা’ কোন ধরনের বিশেষ্য?", ["ব্যক্তিবাচক","জাতিবাচক","ভাববাচক","ক্রিয়াবাচক"], 0],
+    ["‘সততা’ কোন ধরনের বিশেষ্য?", ["ব্যক্তিবাচক","ভাববাচক","বস্তুবাচক","জাতিবাচক"], 1],
+    ["‘মানুষ’ কোন ধরনের বিশেষ্য?", ["জাতিবাচক","ব্যক্তিবাচক","ভাববাচক","ক্রিয়াবাচক"], 0],
+    ["প্রশ্নবোধক বাক্যের শেষে কোন চিহ্ন বসে?", ["।","!","?",";"], 2],
+    ["বিস্ময় প্রকাশে কোন চিহ্ন ব্যবহৃত হয়?", ["?","!",".",":"], 1],
+    ["‘দরজা বন্ধ করো’ কী ধরনের বাক্য?", ["প্রশ্নবোধক","আদেশসূচক","বিস্ময়সূচক","বিবৃতিমূলক"], 1],
+    ["‘বাহ! কী সুন্দর!’ কী ধরনের বাক্য?", ["বিস্ময়সূচক","প্রশ্নবোধক","আদেশসূচক","বিবৃতিমূলক"], 0],
+    ["‘সে’ কোন পদ?", ["বিশেষ্য","সর্বনাম","বিশেষণ","ক্রিয়া"], 1],
+    ["‘এবং’ কোন পদ?", ["অব্যয়","বিশেষ্য","ক্রিয়া","সর্বনাম"], 0]
+  ];
+
+  const bangla = [];
+  for (let i = 0; i < 60; i++) {
+    const q = banglaBase[i % banglaBase.length];
+    bangla.push({
+      question: q[0],
+      options: q[1],
+      answer: q[2],
+      explanation: "সঠিক উত্তর: " + q[1][q[2]]
+    });
+  }
+
+
+  /* ---------- English ---------- */
+
+  const englishBase = [
+    ["What is the plural of 'book'?", ["books","bookes","bookies","book"], 0],
+    ["What is the opposite of 'hot'?", ["warm","cold","heat","fire"], 1],
+    ["What is the opposite of 'big'?", ["large","small","huge","tall"], 1],
+    ["Which is a noun?", ["run","beautiful","school","quickly"], 2],
+    ["Which is a verb?", ["eat","beautiful","book","blue"], 0],
+    ["Which is an adjective?", ["beautiful","run","school","quickly"], 0],
+    ["Which is a pronoun?", ["Rahim","he","school","book"], 1],
+    ["Choose the correct article: ___ apple", ["a","an","the","no"], 1],
+    ["Choose the correct article: ___ book", ["a","an","am","are"], 0],
+    ["What is the past form of 'go'?", ["goed","went","gone","going"], 1],
+    ["What is the past form of 'eat'?", ["eated","ate","eaten","eating"], 1],
+    ["What is the plural of 'child'?", ["childs","children","childes","childrens"], 1],
+    ["What is the plural of 'man'?", ["mans","men","manes","mens"], 1],
+    ["Which sentence is correct?", ["He go school.","He goes to school.","He going school.","He gone school."], 1],
+    ["Which word means happy?", ["sad","glad","angry","weak"], 1],
+    ["Which word means small?", ["tiny","huge","large","big"], 0],
+    ["Which is a color?", ["run","red","eat","jump"], 1],
+    ["Which is an animal?", ["table","tiger","school","book"], 1],
+    ["Which is a place?", ["Dhaka","happy","run","beautiful"], 0],
+    ["Complete: I ___ a student.", ["am","is","are","be"], 0]
+  ];
+
+  const english = [];
+  for (let i = 0; i < 60; i++) {
+    const q = englishBase[i % englishBase.length];
+    english.push({
+      question: q[0],
+      options: q[1],
+      answer: q[2],
+      explanation: "Correct answer: " + q[1][q[2]]
+    });
+  }
+
+
+  /* ---------- গণিত ---------- */
+
+  const math = [];
+
+  for (let i = 1; i <= 60; i++) {
+
+    let a = i + 4;
+    let b = i % 9 + 2;
+    let correct = a + b;
+
+    math.push({
+      question: a + " + " + b + " = কত?",
+      options: [
+        String(correct - 2),
+        String(correct),
+        String(correct + 2),
+        String(correct + 4)
+      ],
+      answer: 1,
+      explanation: a + " + " + b + " = " + correct
+    });
+  }
+
+
+  /* ---------- বিজ্ঞান ---------- */
+
+  const scienceBase = [
+    ["মানুষ শ্বাস নেওয়ার সময় কোন গ্যাস গ্রহণ করে?", ["অক্সিজেন","কার্বন ডাই-অক্সাইড","হাইড্রোজেন","নাইট্রোজেন"], 0],
+    ["উদ্ভিদ খাদ্য তৈরি করে কোন প্রক্রিয়ায়?", ["শ্বসন","সালোকসংশ্লেষণ","পরিপাক","বাষ্পীভবন"], 1],
+    ["পানির রাসায়নিক সংকেত কী?", ["CO2","O2","H2O","NaCl"], 2],
+    ["সূর্য কী?", ["গ্রহ","উপগ্রহ","নক্ষত্র","ধূমকেতু"], 2],
+    ["পৃথিবীর উপগ্রহ কোনটি?", ["সূর্য","চাঁদ","মঙ্গল","শুক্র"], 1],
+    ["মানুষের রক্ত পাম্প করে কোন অঙ্গ?", ["ফুসফুস","হৃদপিণ্ড","কিডনি","মস্তিষ্ক"], 1],
+    ["মানুষের শ্বাসযন্ত্রের প্রধান অঙ্গ কোনটি?", ["হৃদপিণ্ড","ফুসফুস","পাকস্থলী","কিডনি"], 1],
+    ["উদ্ভিদের সবুজ রংয়ের জন্য দায়ী কী?", ["হিমোগ্লোবিন","ক্লোরোফিল","ক্যালসিয়াম","আয়োডিন"], 1],
+    ["বরফ কোন অবস্থার পানি?", ["কঠিন","তরল","গ্যাসীয়","প্লাজমা"], 0],
+    ["পানি ফুটলে কী হয়?", ["জমে যায়","বাষ্পে পরিণত হয়","বরফ হয়","কঠিন হয়"], 1],
+    ["পৃথিবী সূর্যের চারদিকে কী করে?", ["ঘূর্ণন","পরিক্রমণ","স্থির থাকে","লাফ দেয়"], 1],
+    ["দিন-রাত হওয়ার প্রধান কারণ কী?", ["পৃথিবীর আবর্তন","সূর্যের ঘূর্ণন","চাঁদের গতি","বৃষ্টিপাত"], 0],
+    ["শব্দ চলাচলের জন্য কী প্রয়োজন?", ["মাধ্যম","শূন্যস্থান","আলো","অন্ধকার"], 0],
+    ["চুম্বক কোন ধাতুকে আকর্ষণ করে?", ["লোহা","কাঠ","কাচ","প্লাস্টিক"], 0],
+    ["বিদ্যুতের একক কী?", ["মিটার","ভোল্ট","কিলোগ্রাম","লিটার"], 1]
+  ];
+
+  const science = [];
+  for (let i = 0; i < 60; i++) {
+    const q = scienceBase[i % scienceBase.length];
+    science.push({
+      question: q[0],
+      options: q[1],
+      answer: q[2],
+      explanation: "সঠিক উত্তর: " + q[1][q[2]]
+    });
+  }
+
+
+  /* ---------- ICT ---------- */
+
+  const ictBase = [
+    ["CPU-এর পূর্ণরূপ কী?", ["Central Processing Unit","Computer Power Unit","Central Program Unit","Control Processing User"], 0],
+    ["কম্পিউটারের মস্তিষ্ক বলা হয় কোনটিকে?", ["CPU","Mouse","Keyboard","Monitor"], 0],
+    ["HTML-এর পূর্ণরূপ কী?", ["Hyper Text Markup Language","High Text Machine Language","Hyper Tool Mark Language","Home Text Markup Language"], 0],
+    ["CSS কী কাজে ব্যবহৃত হয়?", ["ওয়েব পেজ সাজাতে","গান শুনতে","ছবি তুলতে","ভিডিও করতে"], 0],
+    ["JavaScript কী?", ["Programming language","Operating system","Keyboard","Browser"], 0],
+    ["Keyboard কী ধরনের ডিভাইস?", ["Input","Output","Storage","Network"], 0],
+    ["Monitor কী ধরনের ডিভাইস?", ["Input","Output","Storage","Processing"], 1],
+    ["Mouse কী ধরনের ডিভাইস?", ["Input","Output","Storage","Power"], 0],
+    ["Internet কী?", ["বিশ্বব্যাপী নেটওয়ার্ক","একটি কীবোর্ড","একটি প্রিন্টার","একটি গেম"], 0],
+    ["WWW-এর পূর্ণরূপ কী?", ["World Wide Web","World Web Window","Wide World Word","Web World Wide"], 0],
+    ["Google Chrome কী?", ["Web browser","Operating system","Keyboard","Antivirus"], 0],
+    ["একটি ওয়েবসাইটের মূল HTML ফাইল সাধারণত কী নামে থাকে?", ["index.html","home.exe","main.doc","page.jpg"], 0],
+    ["URL কী?", ["Web address","Computer virus","Keyboard key","File type"], 0],
+    ["RAM কী?", ["Memory","Printer","Browser","Mouse"], 0],
+    ["USB-এর পূর্ণরূপ কী?", ["Universal Serial Bus","United System Board","Universal System Browser","User Serial Board"], 0],
+    ["Wi-Fi কী কাজে ব্যবহৃত হয়?", ["Wireless network","Printing only","Typing","Drawing"], 0]
+  ];
+
+  const ict = [];
+  for (let i = 0; i < 60; i++) {
+    const q = ictBase[i % ictBase.length];
+    ict.push({
+      question: q[0],
+      options: q[1],
+      answer: q[2],
+      explanation: "সঠিক উত্তর: " + q[1][q[2]]
+    });
+  }
+
+
+  /* ---------- BGS ---------- */
+
+  const bgsBase = [
+    ["বাংলাদেশের রাজধানী কোনটি?", ["ঢাকা","চট্টগ্রাম","রাজশাহী","খুলনা"], 0],
+    ["বাংলাদেশের জাতীয় ফুল কী?", ["গোলাপ","শাপলা","জবা","বেলি"], 1],
+    ["বাংলাদেশের জাতীয় ফল কী?", ["আম","কাঁঠাল","লিচু","কলা"], 1],
+    ["বাংলাদেশের জাতীয় পাখি কোনটি?", ["দোয়েল","কাক","শালিক","ময়ূর"], 0],
+    ["বাংলাদেশের জাতীয় পশু কোনটি?", ["হাতি","বাঘ","হরিণ","সিংহ"], 1],
+    ["বাংলাদেশের জাতীয় খেলা কী?", ["ক্রিকেট","ফুটবল","কাবাডি","হকি"], 2],
+    ["বাংলাদেশ স্বাধীন হয় কত সালে?", ["১৯৪৭","১৯৫২","১৯৭১","১৯৭৫"], 2],
+    ["আন্তর্জাতিক মাতৃভাষা দিবস কবে?", ["২১ ফেব্রুয়ারি","২৬ মার্চ","১৬ ডিসেম্বর","১৪ এপ্রিল"], 0],
+    ["স্বাধীনতা দিবস কবে?", ["২১ ফেব্রুয়ারি","২৬ মার্চ","১৬ ডিসেম্বর","১ মে"], 1],
+    ["বিজয় দিবস কবে?", ["২৬ মার্চ","২১ ফেব্রুয়ারি","১৬ ডিসেম্বর","১৫ আগস্ট"], 2],
+    ["বাংলাদেশের জাতীয় কবি কে?", ["রবীন্দ্রনাথ ঠাকুর","কাজী নজরুল ইসলাম","জসীমউদ্দীন","সুকান্ত ভট্টাচার্য"], 1],
+    ["বাংলাদেশের মুদ্রার নাম কী?", ["রুপি","টাকা","ডলার","দিনার"], 1],
+    ["বাংলাদেশের বৃহত্তম সমুদ্রসৈকত কোনটি?", ["কক্সবাজার","কুয়াকাটা","পতেঙ্গা","সেন্ট মার্টিন"], 0],
+    ["বাংলাদেশের দীর্ঘতম নদীগুলোর একটি কোনটি?", ["পদ্মা","বুড়িগঙ্গা","তুরাগ","শীতলক্ষ্যা"], 0],
+    ["সুন্দরবন কী ধরনের বন?", ["মরুভূমি","ম্যানগ্রোভ বন","পাহাড়ি বন","চিরহরিৎ বন"], 1],
+    ["বাংলাদেশের জাতীয় মসজিদ কোনটি?", ["বায়তুল মোকাররম","ষাট গম্বুজ","তারাবি মসজিদ","সোনা মসজিদ"], 0]
+  ];
+
+  const bgs = [];
+  for (let i = 0; i < 60; i++) {
+    const q = bgsBase[i % bgsBase.length];
+    bgs.push({
+      question: q[0],
+      options: q[1],
+      answer: q[2],
+      explanation: "সঠিক উত্তর: " + q[1][q[2]]
+    });
+  }
+
+  return {
+    bangla,
+    english,
+    math,
+    science,
+    ict,
+    bgs
+  };
+}
+
+
+/* =====================================================
+   QUIZ SYSTEM
+===================================================== */
+
+const questionBanks = makeQuestions();
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let selectedSubject = "";
+let lastAnswerText = "";
+
+
+function shuffle(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+
+function startQuiz(amount) {
+
+  selectedSubject =
+    document.getElementById("subjectSelect").value;
+
+  let bank = questionBanks[selectedSubject];
+
+  currentQuestions =
+    shuffle(bank).slice(0, Math.min(amount, 60));
+
+  currentIndex = 0;
+  score = 0;
+
+  document.getElementById("scoreDisplay").innerText =
+    "স্কোর: ০";
+
+  document.getElementById("resultArea")
+    .classList.add("hidden");
+
+  document.getElementById("quizArea")
+    .classList.remove("hidden");
+
+  window.scrollTo({
+    top: document.getElementById("quizArea").offsetTop - 20,
+    behavior: "smooth"
+  });
+
+  showQuestion();
+}
+
+
+function showQuestion() {
+
+  const q = currentQuestions[currentIndex];
+
+  document.getElementById("questionNumber").innerText =
+    "প্রশ্ন " + (currentIndex + 1) +
+    "/" + currentQuestions.length;
+
+  document.getElementById("question").innerText =
+    q.question;
+
+  document.getElementById("progressBar").style.width =
+    ((currentIndex + 1) / currentQuestions.length * 100) + "%";
+
+  const optionsDiv =
+    document.getElementById("options");
+
+  optionsDiv.innerHTML = "";
+
+  q.options.forEach((option, index) => {
+
+    const button = document.createElement("button");
+
+    button.className = "option-btn";
+    button.innerText = option;
+
+    button.onclick = () =>
+      selectAnswer(index);
+
+    optionsDiv.appendChild(button);
+  });
+
+  document.getElementById("explanation")
+    .classList.add("hidden");
+
+  document.getElementById("nextButton")
+    .classList.add("hidden");
+}
+
+
+function selectAnswer(selected) {
+
+  const q = currentQuestions[currentIndex];
+
+  const buttons =
+    document.querySelectorAll(".option-btn");
+
+  buttons.forEach(button => {
+    button.disabled = true;
+  });
+
+  if (selected === q.answer) {
+
+    score++;
+
+    buttons[selected].classList.add("correct");
+
+  } else {
+
+    buttons[selected].classList.add("wrong");
+
+    buttons[q.answer].classList.add("correct");
+  }
+
+  document.getElementById("scoreDisplay").innerText =
+    "স্কোর: " + score;
+
+  document.getElementById("explanationText").innerText =
+    q.explanation;
+
+  document.getElementById("explanation")
+    .classList.remove("hidden");
+
+  document.getElementById("nextButton")
+    .classList.remove("hidden");
+}
+
+
+function nextQuestion() {
+
+  currentIndex++;
+
+  if (currentIndex >= currentQuestions.length) {
+    finishQuiz();
+  } else {
+    showQuestion();
+  }
+}
+
+
+function finishQuiz() {
+
+  document.getElementById("quizArea")
+    .classList.add("hidden");
+
+  document.getElementById("resultArea")
+    .classList.remove("hidden");
+
+  const total = currentQuestions.length;
+
+  const percent =
+    Math.round((score / total) * 100);
+
+  const wrong = total - score;
+
+  document.getElementById("correctCount")
+    .innerText = score;
+
+  document.getElementById("wrongCount")
+    .innerText = wrong;
+
+  document.getElementById("percentage")
+    .innerText = percent + "%";
+
+  document.getElementById("resultText")
+    .innerText =
+      "তোমার স্কোর: " + score +
+      " / " + total +
+      " (" + percent + "%)";
+
+  window.scrollTo({
+    top: document.getElementById("resultArea").offsetTop - 20,
+    behavior: "smooth"
+  });
+}
+
+
+function restartQuiz() {
+
+  document.getElementById("resultArea")
+    .classList.add("hidden");
+
+  document.getElementById("quizArea")
+    .classList.add("hidden");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+/* =====================================================
+   ROBO TEACHER
+===================================================== */
+
+function askTeacher() {
+
+  const input =
+    document.getElementById("studentQuestion");
+
+  const question =
+    input.value.trim().toLowerCase();
+
+  const answerBox =
+    document.getElementById("teacherAnswer");
+
+  const answerText =
+    document.getElementById("teacherAnswerText");
+
+  if (!question) {
+
+    answerText.innerText =
+      "আগে একটি প্রশ্ন লিখো।";
+
+    answerBox.classList.remove("hidden");
+    lastAnswerText = answerText.innerText;
+    return;
+  }
+
+  let answer =
+    "এই বিষয়ে আমার কাছে নির্দিষ্ট উত্তর নেই। প্রশ্নটি একটু সহজ করে আবার করো।";
+
+
+  if (question.includes("html")) {
+
+    answer =
+      "HTML হলো ওয়েব পেজ তৈরির মূল কাঠামোর ভাষা। HTML দিয়ে ওয়েব পেজের লেখা, ছবি, বাটন এবং বিভিন্ন অংশ তৈরি করা হয়।";
+
+  } else if (question.includes("css")) {
+
+    answer =
+      "CSS দিয়ে ওয়েব পেজের ডিজাইন, রং, আকার, ফন্ট এবং layout সুন্দর করা হয়।";
+
+  } else if (
+    question.includes("javascript") ||
+    question.includes("জাভাস্ক্রিপ্ট")
+  ) {
+
+    answer =
+      "JavaScript হলো একটি programming language, যা ওয়েবসাইটকে interactive বা কাজ করার উপযোগী করে।";
+
+  } else if (
+    question.includes("cpu") ||
+    question.includes("সিপিইউ")
+  ) {
+
+    answer =
+      "CPU-এর পূর্ণরূপ Central Processing Unit। এটি কম্পিউটারের প্রধান processing অংশ।";
+
+  } else if (
+    question.includes("পানি") &&
+    question.includes("সংকেত")
+  ) {
+
+    answer =
+      "পানির রাসায়নিক সংকেত হলো H₂O। এতে দুইটি হাইড্রোজেন ও একটি অক্সিজেন পরমাণু থাকে।";
+
+  } else if (
+    question.includes("বাংলাদেশের রাজধানী") ||
+    question.includes("রাজধানী")
+  ) {
+
+    answer =
+      "বাংলাদেশের রাজধানী হলো ঢাকা।";
+
+  } else if (
+    question.includes("জাতীয় ফুল")
+  ) {
+
+    answer =
+      "বাংলাদেশের জাতীয় ফুল হলো শাপলা।";
+
+  } else if (
+    question.includes("জাতীয় পাখি")
+  ) {
+
+    answer =
+      "বাংলাদেশের জাতীয় পাখি হলো দোয়েল।";
+
+  } else if (
+    question.includes("জাতীয় পশু")
+  ) {
+
+    answer =
+      "বাংলাদেশের জাতীয় পশু হলো রয়েল বেঙ্গল টাইগার।";
+
+  } else if (
+    question.includes("স্বাধীনতা দিবস")
+  ) {
+
+    answer =
+      "বাংলাদেশের স্বাধীনতা দিবস ২৬ মার্চ।";
+
+  } else if (
+    question.includes("বিজয় দিবস")
+  ) {
+
+    answer =
+      "বাংলাদেশের বিজয় দিবস ১৬ ডিসেম্বর।";
+
+  } else if (
+    question.includes("সূর্য")
+  ) {
+
+    answer =
+      "সূর্য একটি নক্ষত্র। এটি পৃথিবীর সবচেয়ে কাছের নক্ষত্র এবং পৃথিবীর প্রধান শক্তির উৎস।";
+
+  } else if (
+    question.includes("স্বরবর্ণ")
+  ) {
+
+    answer =
+      "বাংলা বর্ণমালায় স্বরবর্ণ ১১টি।";
+
+  } else if (
+    question.includes("গণিত") ||
+    question.includes("+")
+  ) {
+
+    answer =
+      "গণিতের প্রশ্নটি সম্পূর্ণ লিখলে আমি ধাপে ধাপে সমাধান করে বোঝানোর চেষ্টা করব।";
+  }
+
+
+  answerText.innerText = answer;
+  lastAnswerText = answer;
+
+  answerBox.classList.remove("hidden");
+}
+
+
+/* =====================================================
+   BANGLA VOICE
+===================================================== */
+
+function speakAnswer() {
+
+  if (!("speechSynthesis" in window)) {
+
+    alert("এই ফোনের Browser Voice সুবিধা পাওয়া যায়নি।");
+
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const speech =
+    new SpeechSynthesisUtterance(lastAnswerText);
+
+  speech.lang = "bn-BD";
+  speech.rate = 0.9;
+  speech.pitch = 1;
+  speech.volume = 1;
+
+  const voices =
+    window.speechSynthesis.getVoices();
+
+  const banglaVoice =
+    voices.find(v =>
+      v.lang &&
+      v.lang.toLowerCase().startsWith("bn")
+    );
+
+  if (banglaVoice) {
+    speech.voice = banglaVoice;
+  }
+
+  window.speechSynthesis.speak(speech);
+}
+
+
+window.speechSynthesis &&
+window.speechSynthesis.addEventListener(
+  "voiceschanged",
+  function() {
+    window.speechSynthesis.getVoices();
+  }
+);
+
+</script>
 
 </body>
   </html>
